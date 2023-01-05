@@ -1,12 +1,8 @@
-package com.example.animalshelter.classes
-
-import java.util.*
+package com.example.animalshelter.AnimalClasses
 
 
-abstract class Animal(
-    var name: String,
-    var age: UInt,
-    var isAdopted: Boolean): Comparable<Animal> {
+abstract class Animal(var name: String, var age: Int, var isAdopted: Boolean): Comparable<Animal> {
+    
     abstract val type: String
     abstract val breed: String?
     abstract var isWild: Boolean?
