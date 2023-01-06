@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/itemList" android:title="List"  android:icon="@drawable/ic_baseline_list_24"
+            tools:ignore="HardcodedText" />
+    <item android:id="@+id/itemInput"  android:title="Input"  android:icon="@drawable/ic_baseline_input_24"
+            tools:ignore="HardcodedText" />
+
+</menu>
