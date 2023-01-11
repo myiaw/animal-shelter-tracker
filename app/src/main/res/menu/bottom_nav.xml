@@ -5,5 +5,6 @@
             tools:ignore="HardcodedText" />
     <item android:id="@+id/itemInput"  android:title="Input"  android:icon="@drawable/ic_baseline_input_24"
             tools:ignore="HardcodedText" />
+    <item android:id="@+id/itemMap"  android:title="Map"  android:icon="@drawable/ic_baseline_map_24"/>
 
 </menu>

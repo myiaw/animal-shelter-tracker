@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.example.animalshelter.AnimalClasses.Shelter
+import android.widget.Toast
+import com.example.animalshelter.AnimalClasses.Shelter.Companion.SelectedAnimal
+import com.example.animalshelter.AnimalClasses.Shelter.Companion.SelectedShelter
 import com.example.animalshelter.databinding.FragmentInputBinding
 
 class InputFragment : Fragment(R.layout.fragment_input) {
@@ -38,43 +40,47 @@ class InputFragment : Fragment(R.layout.fragment_input) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (Shelter.SelectedAnimal != null) {
-            binding?.inputNameET?.setText(Shelter.SelectedAnimal?.name)
-            binding?.inputAgeET?.setText(Shelter.SelectedAnimal?.age.toString())
-            binding?.inputBreedET?.setText(Shelter.SelectedAnimal?.breed)
-            if (Shelter.SelectedAnimal!!.type == "Cat") {
-                binding?.spinnerType?.setSelection(0)
-            } else if (Shelter.SelectedAnimal!!.type == "Dog") {
-                binding?.spinnerType?.setSelection(1)
+        val animalTypesArray = requireContext().resources.getStringArray(R.array.animal_types_array)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            animalTypesArray
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        binding?.spinnerType?.adapter = adapter
+
+        binding?.spinnerType?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedType = animalTypesArray[position]
             }
-            binding?.btnToggleIsWild?.isChecked = Shelter.SelectedAnimal!!.isWild == true
-            binding?.btnToggleIsAdopted?.isChecked = Shelter.SelectedAnimal!!.isAdopted == true
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // do nothing
+            }
         }
 
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.animal_types_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding?.spinnerType?.adapter = adapter
 
-            binding?.spinnerType?.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        selectedType = parent?.getItemAtPosition(position).toString()
-                    }
-
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        selectedType = "Nothing"
-                    }
+        if (SelectedAnimal != null) {
+            val selectedAnimal = SelectedShelter?.getList()
+                ?.get(SelectedShelter?.getList()?.indexOf(SelectedAnimal)!!)
+            binding?.inputNameET?.setText(selectedAnimal?.name)
+            binding?.inputAgeET?.setText(selectedAnimal?.age.toString())
+            binding?.inputBreedET?.setText(selectedAnimal?.breed)
+            binding?.spinnerType?.setSelection(
+                when (selectedAnimal?.type) {
+                    "Cat" -> 0
+                    "Dog" -> 1
+                    else -> throw IllegalArgumentException("Invalid animal type: ${selectedAnimal?.type}")
                 }
+            )
+            binding?.btnToggleIsWild?.isChecked = selectedAnimal?.isWild == true
+            binding?.btnToggleIsAdopted?.isChecked = selectedAnimal?.isAdopted == true
         }
 
 
@@ -82,6 +88,14 @@ class InputFragment : Fragment(R.layout.fragment_input) {
 
 
         binding?.btnSubmit?.setOnClickListener {
+            if (SelectedShelter == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please select a shelter first",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
             if (binding!!.inputNameET.text.isNotEmpty() && binding!!.inputNameET.text.isNotEmpty() && binding!!.inputBreedET.text.isNotEmpty() && selectedType != "Nothing") {
 
                 val isWild = if (binding!!.btnToggleIsWild.isChecked) "true" else "false"
@@ -98,9 +112,8 @@ class InputFragment : Fragment(R.layout.fragment_input) {
                 binding!!.inputBreedET.error = "Please enter the breed"
             }
 
-            fragmentManager?.beginTransaction()
-                ?.replace(R.id.fragmentContainer, AnimalListFragment())
-                ?.commit()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, AnimalListFragment()).commit()
 
 
         }

@@ -14,7 +14,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:menu="@menu/bottom_nav"/>
+            app:menu="@menu/bottom_nav" />
 
     <FrameLayout
             android:id="@+id/fragmentContainer"
@@ -25,8 +25,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-            app:layout_constraintTop_toTopOf="parent">
-    </FrameLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
