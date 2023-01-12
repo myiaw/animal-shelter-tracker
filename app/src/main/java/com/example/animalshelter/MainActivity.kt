@@ -1,15 +1,18 @@
 package com.example.animalshelter
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.animalshelter.AnimalClasses.Cat
 import com.example.animalshelter.AnimalClasses.Dog
+import com.example.animalshelter.AnimalClasses.Shelter
 import com.example.animalshelter.AnimalClasses.Shelter.Companion.SelectedAnimal
 import com.example.animalshelter.AnimalClasses.Shelter.Companion.SelectedShelter
 
 import com.example.animalshelter.databinding.ActivityMainBinding
+import io.github.serpro69.kfaker.faker
 
 
 class MainActivity : AppCompatActivity(), OnDataPass {
@@ -21,8 +24,11 @@ class MainActivity : AppCompatActivity(), OnDataPass {
         val view = binding.root
         setContentView(view)
         app = application as MyApplication
-
-        setCurrentFragment(MapsFragment())
+        if (app.mShelters.isEmpty()) {
+            generateShelters(5)
+        }
+        setCurrentFragment(AnimalListFragment())
+        onNotificationClicked(intent)
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.itemInput -> setCurrentFragment(InputFragment())
@@ -59,6 +65,19 @@ class MainActivity : AppCompatActivity(), OnDataPass {
                 ?.set(SelectedShelter!!.getList().indexOf(SelectedAnimal), animal)
         } else {
             SelectedShelter?.getList()?.add(animal)
+        }
+    }
+
+    fun onNotificationClicked(mIntent: Intent) {
+        if (mIntent.hasExtra("KEY")) {
+            setCurrentFragment(AnimalListFragment())
+        }
+    }
+
+    fun generateShelters(amount: Int) {
+        for (i in 0 until amount) {
+            val faker = faker { }
+            app.mShelters.add(Shelter(faker.funnyName.name()))
         }
     }
 
