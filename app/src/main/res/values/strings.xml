@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">AnimalShelter</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="btn_input">INPUT</string>
+    <string name="btn_showList">LIST</string>
+    <string name="TV_title">Animal Shelter</string>
+    <string name="inputNameTV">Name </string>
+    <string name="inputAgeTV">Age </string>
+    <string name="inputBreedTV">Breed </string>
+    <string name="inputIsAdoptedTV">Is it adopted? </string>
+    <string name="inputIsAdoptedYes">Yes</string>
+    <string name="inputIsAdoptedNo">No</string>
+    <string name="inputSubmit">Submit</string>
+    <string name="inputIsWildTV">Is it wild? </string>
+    <string name="inputIsWildYes">Yes</string>
+    <string name="inputIsWildNo">No</string>
+    <string name="inputTypeTV">Type </string>
+
+
+    <string-array name="animal_types_array">
+        <item>Cat</item>
+        <item>Dog</item>
+    </string-array>
+    <string name="title_activity_maps">MapsActivity</string>
+
+
+</resources>
